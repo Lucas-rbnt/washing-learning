@@ -5,7 +5,7 @@
 This repository is not yet released on PyPI but you can install it quite simply.
 
 ```
-git clone ....
+git clone git@github.com:Lucas-rbnt/mlutils.git
 cd mlutils/
 pip install .
 ```
