@@ -1,4 +1,4 @@
-# Contributing to mlutils
+# Contributing to Washing Learning
 
 Everything you need to know to contribute efficiently to the project.
 
@@ -6,7 +6,7 @@ Everything you need to know to contribute efficiently to the project.
 
 ### Codebase structure
 
-Everything is contained into mlutils and is then divided by field of applications, vision, language, reinforcement learning,
+Everything is contained into Washing Learning and is then divided by field of applications, vision, language, reinforcement learning,
 time series...
 
 
@@ -44,8 +44,8 @@ In order to contribute to project, you will first need to **set up your developm
 -   We are going to create a python3.6 virtual environment dedicated to the `mlutils` project using [conda](https://docs.conda.io/en/latest/) as an environment management system. 
 
     ```shell
-    conda create --name mlutils python=3.6 anaconda 
-    conda activate mlutils
+    conda create --name washing-learning python=3.6 anaconda 
+    conda activate washing-learning
     ```
 
 #### 2. Fork the repository
@@ -59,21 +59,21 @@ In order to contribute to project, you will first need to **set up your developm
     -  Clone your fork locally.
 
         ```shell
-        cd /PATH_MLUTILS
-        git clone https://github.com/YOUR_USERNAME/mlutils.git
-        cd mlutils
+        cd /PATH_WASHING_LEARNING
+        git clone https://github.com/YOUR_USERNAME/washing-learning.git
+        cd washing-learning
         ```
 
 #### 3. Set origin and upstream remotes repositories
 
 <br>
 
-1.  Configure your fork `YOUR_USERNAME/mlutils` as `origin` remote
+1.  Configure your fork `YOUR_USERNAME/washing-learning` as `origin` remote
 
-2.  Configure `mlutils repository` as `upstream` remote
+2.  Configure `washing-learning repository` as `upstream` remote
 
     ```shell
-    git remote add upstream https://github.com/pyronear/pyro-risks.git
+    git remote add upstream URL
     git pull --rebase upstram master 
     ```
 

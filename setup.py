@@ -19,7 +19,7 @@ def _load_requirements(path_dir: str, file_name: str) -> List[str]:
 
 
 setup(
-    name="mlutils",
+    name="washing-learning",
     version="1.0.0",
     author="Lucas Robinet",
     author_email="lucas.robinet@yahoo.com",

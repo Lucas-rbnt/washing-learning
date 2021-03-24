@@ -7,7 +7,7 @@ import imutils
 
 
 class SimplePreprocessor:
-    def __init__(self, width, height, inter=cv2.INTER_AREA):
+    def __init__(self, width: int, height: int, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
         self.inter = inter

@@ -1,4 +1,5 @@
-<h1 align="center">mlutils : The Machine Learning Toolbox </h1>
+![alt text](washinglearning.png "Washing Learning")
+<h1 align="center">  Washing Learning : The Machine Learning Toolbox </h1>
 <p align="center">
 
 </p>
@@ -8,8 +9,8 @@
 This repository is not yet released on PyPI but you can install it quite simply.
 
 ```
-git clone git@github.com:Lucas-rbnt/mlutils.git
-cd mlutils/
+git clone git@github.com:Lucas-rbnt/washing-learning.git
+cd washing-learning/
 pip install .
 ```
 
@@ -23,8 +24,8 @@ pip install .[dev]
 From now on you can use this toolbox simply, you'll find a code snippet below
 
 ```python
-from mlutils.vision.datasets.dataloaders import SimpleDatasetLoader
-from mlutils.vision.preprocessing.preprocessors import SimpleScaler, SimplePreprocessor, ImageToArrayPreprocessor
+from washing_learning.vision.datasets.dataloaders import SimpleDatasetLoader
+from washing_learning.vision.preprocessing.preprocessors import SimpleScaler, SimplePreprocessor, ImageToArrayPreprocessor
 import os
 
 DATASET_PATH = os.path.join(os.path.dirname(__file__), "datasets")
