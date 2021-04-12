@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import versioneer
 import os
 from typing import List
 
@@ -20,13 +21,14 @@ def _load_requirements(path_dir: str, file_name: str) -> List[str]:
 
 setup(
     name="washing-learning",
-    version="1.0.0",
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Lucas Robinet",
     author_email="lucas.robinet@yahoo.com",
     description="Machine Learning Toolbox",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/Lucas-rbnt/washing-learning",
     license="Apache-2.0",
     packages=find_packages(exclude=["examples", "examples.*", "tests", "tests.*"]),
     install_requires=_load_requirements(
