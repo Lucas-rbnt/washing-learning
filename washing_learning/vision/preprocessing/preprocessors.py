@@ -59,7 +59,9 @@ class ImageToArrayPreprocessor:
 
 
 class CropPreprocessor:
-    def __init__(self, width: float, height: float, horiz: bool = True, inter=cv2.INTER_AREA) -> None:
+    def __init__(
+        self, width: float, height: float, horiz: bool = True, inter=cv2.INTER_AREA
+    ) -> None:
         self.width = width
         self.height = height
         self.horiz = horiz

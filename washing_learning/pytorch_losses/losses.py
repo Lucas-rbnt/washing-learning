@@ -9,27 +9,35 @@ import torch.nn.functional as F
 
 
 class FocalLoss(nn.Module):
-    def __init__(self, weight: Optional[TensorType["num_classes"]] = None,
-                 gamma: float = 2., reduction: str = 'none') -> None:
+    def __init__(
+        self,
+        weight: Optional[TensorType["num_classes"]] = None,
+        gamma: float = 2.0,
+        reduction: str = "none",
+    ) -> None:
         super(FocalLoss, self).__init__()
         self.weight = weight
         self.gamma = gamma
         self.reduction = reduction
 
-    def forward(self, input_tensor: TensorType["batch_size", "features"], target_tensor: TensorType["batch_size"]) -> TensorType["batch_size"]:
+    def forward(
+        self,
+        input_tensor: TensorType["batch_size", "features"],
+        target_tensor: TensorType["batch_size"],
+    ) -> TensorType["batch_size"]:
         log_prob = F.log_softmax(input_tensor, dim=-1)
         prob = torch.exp(log_prob)
         return F.nll_loss(
             ((1 - prob) ** self.gamma) * log_prob,
             target_tensor,
             weight=self.weight,
-            reduction=self.reduction
+            reduction=self.reduction,
         )
 
 
 class NLL_OHEM(nn.NLLLoss):
-    """ Online hard example mining.
-    Needs input from nn.LogSotmax() """
+    """Online hard example mining.
+    Needs input from nn.LogSotmax()"""
 
     def __init__(self, ratio) -> None:
         super(NLL_OHEM, self).__init__(None, True)
@@ -48,4 +56,3 @@ class NLL_OHEM(nn.NLLLoss):
         x_hn = x.index_select(0, idxs)
         y_hn = y.index_select(0, idxs)
         return nn.functional.nll_loss(x_hn, y_hn)
-

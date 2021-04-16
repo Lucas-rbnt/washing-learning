@@ -14,7 +14,7 @@ Image = Union[np.ndarray, torch.Tensor, PIL.Image]
 
 
 class TensorBoardLogger(object):
-    def __init__(self, log_dir: str, log_hist: bool =True) -> None:
+    def __init__(self, log_dir: str, log_hist: bool = True) -> None:
         """Create a summary writer logging to log_dir."""
         if log_hist:  # Check a new folder for each log should be dreated
             log_dir = os.path.join(
@@ -26,12 +26,18 @@ class TensorBoardLogger(object):
         """Log a scalar variable."""
         self.writer.add_scalar(tag, value, step)
 
-    def list_of_scalars_summary(self, tag_value_pairs: List[Tuple[str, float]], step: int) -> None:
+    def list_of_scalars_summary(
+        self, tag_value_pairs: List[Tuple[str, float]], step: int
+    ) -> None:
         """Log scalar variables."""
         for tag, value in tag_value_pairs:
             self.writer.add_scalar(tag, value, step)
 
-    def graph_summary(self, model: torch.nn.Module, img: TensorType["batch", "channel", "height", "width"]) -> None:
+    def graph_summary(
+        self,
+        model: torch.nn.Module,
+        img: TensorType["batch", "channel", "height", "width"],
+    ) -> None:
         """Log a graph model"""
         self.writer.add_graph(model, img)
 
