@@ -1,4 +1,4 @@
-# import the necessary packages
+# Third-party libraries
 import cv2
 from sklearn.feature_extraction.image import extract_patches_2d
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -7,65 +7,65 @@ import imutils
 
 
 class SimplePreprocessor:
-    def __init__(self, width: int, height: int, inter=cv2.INTER_AREA) -> None:
+    def __init__(self, width: float, height: float, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
         self.inter = inter
 
-    def preprocess(self, image):
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
 
         return cv2.resize(image, (self.width, self.height), interpolation=self.inter)
 
 
 class SimpleScaler:
-    def __init__(self, max=255.0):
-        self.max = max
+    def __init__(self, factor: float = 255.0) -> None:
+        self.factor = factor
 
-    def preprocess(self, image):
-        return image / self.max
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
+        return image / self.factor
 
 
 class PatchPreprocessor:
-    def __init__(self, width, height):
+    def __init__(self, width: float, height: float) -> None:
         self.width = width
         self.height = height
 
-    def preprocess(self, image):
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
         return extract_patches_2d(image, (self.height, self.width), max_patches=1)[0]
 
 
 class MeanPreprocessor:
-    def __init__(self, rMean, gMean, bMean):
-        self.rMean = rMean
-        self.gMean = gMean
-        self.bMean = bMean
+    def __init__(self, r_mean: float, g_mean: float, b_mean: float) -> None:
+        self.r_mean = r_mean
+        self.g_mean = g_mean
+        self.b_mean = b_mean
 
-    def preprocess(self, image):
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
         (B, G, R) = cv2.split(image.astype("float32"))
 
-        R -= self.rMean
-        G -= self.gMean
-        B -= self.bMean
+        R -= self.r_mean
+        G -= self.g_mean
+        B -= self.b_mean
 
         return cv2.merge([B, G, R])
 
 
 class ImageToArrayPreprocessor:
-    def __init__(self, dataFormat=None):
-        self.dataFormat = dataFormat
+    def __init__(self, data_format=None) -> None:
+        self.data_format = data_format
 
-    def preprocess(self, image):
-        return img_to_array(image, data_format=self.dataFormat)
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
+        return img_to_array(image, data_format=self.data_format)
 
 
 class CropPreprocessor:
-    def __init__(self, width, height, horiz=True, inter=cv2.INTER_AREA):
+    def __init__(self, width: float, height: float, horiz: bool = True, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
         self.horiz = horiz
         self.inter = inter
 
-    def preprocess(self, image):
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
         crops = []
         (h, w) = image.shape[:2]
         coords = [
@@ -92,12 +92,12 @@ class CropPreprocessor:
 
 
 class AspectAwarePreprocessor:
-    def __init__(self, width, height, inter=cv2.INTER_AREA):
+    def __init__(self, width: float, height: float, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
         self.inter = inter
 
-    def preprocess(self, image):
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
         (h, w) = image.shape[:2]
         dW = 0
         dH = 0

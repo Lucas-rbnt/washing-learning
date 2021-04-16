@@ -59,3 +59,4 @@ urllib3==1.26.3
 virtualenv==20.4.2
 Werkzeug==1.0.1
 wrapt==1.12.1
+pytest
