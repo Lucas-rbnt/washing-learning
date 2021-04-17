@@ -1,45 +1,48 @@
-from keras.utils import np_utils
-import numpy as np
-import h5py
+# Standard libraries
 import os
+
+# Third-party libraries
+import h5py
+import numpy as np
+from keras.utils import np_utils
 
 
 class HDF5DatasetWriter:
-    def __init__(self, dims, outputPath, dataKey="images", bufSize=1000):
-        if os.path.exists(outputPath):
+    def __init__(self, dims, output_path: str, data_key="images", buf_size=1000) -> None:
+        if os.path.exists(output_path):
             raise ValueError(
                 "The supplied outputPath already exists and cannot be overwritten. Manually delete the file \
                 before continuing",
-                outputPath,
+                output_path,
             )
 
-        self.db = h5py.File(outputPath, "w")
-        self.data = self.db.create_dataset(dataKey, dims, dtype="float")
+        self.db = h5py.File(output_path, "w")
+        self.data = self.db.create_dataset(data_key, dims, dtype="float")
         self.labels = self.db.create_dataset("labels", (dims[0],), dtype="int")
-        self.bufSize = bufSize
+        self.bufSize = buf_size
         self.buffer = {"data": [], "labels": []}
         self.idx = 0
 
-    def add(self, rows, labels):
+    def add(self, rows, labels) -> None:
         self.buffer["data"].extend(rows)
         self.buffer["labels"].extend(labels)
 
         if len(self.buffer["data"]) >= self.bufSize:
             self.flush()
 
-    def flush(self):
+    def flush(self) -> None:
         i = self.idx + len(self.buffer["data"])
         self.data[self.idx : i] = self.buffer["data"]
         self.labels[self.idx : i] = self.buffer["labels"]
         self.idx = i
         self.buffer = {"data": [], "labels": []}
 
-    def storeClassLabels(self, classLabels):
+    def store_class_labels(self, class_labels) -> None:
         dt = h5py.special_dtype(vlen=str)
-        labelSet = self.db.create_dataset("label_names", (len(classLabels),), dtype=dt)
-        labelSet[:] = classLabels
+        label_set = self.db.create_dataset("label_names", (len(class_labels),), dtype=dt)
+        label_set[:] = class_labels
 
-    def close(self):
+    def close(self) -> None:
         if len(self.buffer["data"]) > 0:
             self.flush()
 
@@ -48,17 +51,17 @@ class HDF5DatasetWriter:
 
 class HDF5DatasetGenerator:
     def __init__(
-        self, dbPath, batchSize, preprocessors=None, aug=None, binarize=True, classes=2
-    ):
-        self.batchSize = batchSize
+        self, db_path, batch_size, preprocessors=None, aug=None, binarize=True, classes=2
+    ) -> None:
+        self.batchSize = batch_size
         self.preprocessors = preprocessors
         self.aug = aug
         self.binarize = binarize
         self.classes = classes
-        self.db = h5py.File(dbPath)
+        self.db = h5py.File(db_path)
         self.numImages = self.db["labels"].shape[0]
 
-    def generator(self, passes=np.inf):
+    def generator(self, passes=np.inf) -> None:
         epochs = 0
         while epochs < passes:
             for i in np.arange(0, self.numImages, self.batchSize):
@@ -67,21 +70,21 @@ class HDF5DatasetGenerator:
                 if self.binarize:
                     labels = np_utils.to_categorical(labels, self.classes)
                 if self.preprocessors is not None:
-                    procImages = []
+                    proc_images = []
                     for image in images:
                         for p in self.preprocessors:
                             image = p.preprocess(image)
 
-                        procImages.append(image)
-                    images = np.array(procImages)
+                        proc_images.append(image)
+                    images = np.array(proc_images)
                 if self.aug is not None:
                     (images, labels) = next(
-                        self.aug.flow(images, labels, batch_size=self.batchSize)
+                        self.aug.flow(images, labels, batch_size=self.batch_size)
                     )
 
                 yield (images, labels)
 
             epochs += 1
 
-    def close(self):
+    def close(self) -> None:
         self.db.close()
