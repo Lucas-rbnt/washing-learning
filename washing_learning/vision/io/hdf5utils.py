@@ -1,4 +1,6 @@
 # Standard libraries
+
+
 import os
 
 # Third-party libraries
@@ -8,7 +10,9 @@ from keras.utils import np_utils
 
 
 class HDF5DatasetWriter:
-    def __init__(self, dims, output_path: str, data_key="images", buf_size=1000) -> None:
+    def __init__(
+        self, dims, output_path: str, data_key="images", buf_size=1000
+    ) -> None:
         if os.path.exists(output_path):
             raise ValueError(
                 "The supplied outputPath already exists and cannot be overwritten. Manually delete the file \
@@ -39,7 +43,9 @@ class HDF5DatasetWriter:
 
     def store_class_labels(self, class_labels) -> None:
         dt = h5py.special_dtype(vlen=str)
-        label_set = self.db.create_dataset("label_names", (len(class_labels),), dtype=dt)
+        label_set = self.db.create_dataset(
+            "label_names", (len(class_labels),), dtype=dt
+        )
         label_set[:] = class_labels
 
     def close(self) -> None:
@@ -51,7 +57,13 @@ class HDF5DatasetWriter:
 
 class HDF5DatasetGenerator:
     def __init__(
-        self, db_path, batch_size, preprocessors=None, aug=None, binarize=True, classes=2
+        self,
+        db_path,
+        batch_size,
+        preprocessors=None,
+        aug=None,
+        binarize=True,
+        classes=2,
     ) -> None:
         self.batchSize = batch_size
         self.preprocessors = preprocessors
