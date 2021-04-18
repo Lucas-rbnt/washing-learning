@@ -1,11 +1,18 @@
+"""
+Implements every helpers and utils related to time logging.
+"""
+import time
+
 # Standard libraries
 from functools import wraps
-import time
 
 
 def chronometer(function):
     """
     This function aims to be a decorator to capture the time a function take to execute.
+    Args:
+        function (python function) :  The runtime of this function will be measured.
+
 
     For instance,
 

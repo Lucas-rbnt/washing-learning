@@ -1,14 +1,23 @@
 # Standard libraries
 from typing import Optional
-from torchtyping import TensorType
 
 # Third-party libraries
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchtyping import TensorType
 
 
 class FocalLoss(nn.Module):
+    """
+    A Class that implements focal loss.
+
+    Args:
+        weights (Optional[Tensor]) : class weights to apply to the loss
+        gamma (float) : The Focal Loss gamma coefficient. (default is `2.`)
+        reduction (string) : The reduction to apply. (default is `None`)
+    """
+
     def __init__(
         self,
         weight: Optional[TensorType["num_classes"]] = None,

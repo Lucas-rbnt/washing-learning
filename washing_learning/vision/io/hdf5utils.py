@@ -1,6 +1,4 @@
 # Standard libraries
-
-
 import os
 
 # Third-party libraries

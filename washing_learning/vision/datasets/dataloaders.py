@@ -1,6 +1,13 @@
-# Standard libraries
-from typing import List, Callable, Tuple
+"""
+This module implements all kind of data loaders in the Computer Vision field. This module is tf.keras friendly to fill the
+gap in the area of data loaders of these libraries.
+
+All these Data Loaders implements a :meth:`load(self, image_paths) <load>` method.
+"""
 import os
+
+# Standard libraries
+from typing import Callable, List, Tuple
 
 # Third-party libraries
 import cv2
@@ -8,13 +15,27 @@ import numpy as np
 
 
 class SimpleDatasetLoader:
+    """
+    This class allows to chain several processors in order to load data in a specific format.
+    The images loaded are loaded as numpy array.
+
+    Args:
+        preprocessors (list[Callable]) : The preprocessors that will be used in the right order
+
+    Example:
+        >>> sdl = SimpleDatasetLoader(preprocessors=None)
+        >>> sdl.load(DATASET_PATH)
+    """
+
     def __init__(self, preprocessors: List[Callable] = None) -> None:
         self.preprocessors = preprocessors
 
         if self.preprocessors is None:
             self.preprocessors = []
 
-    def load(self, image_paths: List[str], verbose: int = -1) -> Tuple[np.ndarray, np.ndarray]:
+    def load(
+        self, image_paths: List[str], verbose: int = -1
+    ) -> Tuple[np.ndarray, np.ndarray]:
         # init the list of features and labels
         data = []
         labels = []

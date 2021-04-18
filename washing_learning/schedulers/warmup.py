@@ -1,3 +1,7 @@
+"""
+Implement scheduler that handle perfectly warm up phase. Since many SOTA architecture use warmup and Pytorch
+does not handle this natively, this file make sense.
+"""
 # Standard libraries
 from typing import List
 
@@ -7,6 +11,25 @@ from torch.optim.lr_scheduler import _LRScheduler
 
 
 class LinearWarmupScheduler(_LRScheduler):
+    """
+    Implement a PyTorch scheduler that handle first a linear warm up phase.
+
+    Args:
+        optimizer (Optimizer) : Wrapped optimizer.
+        total_steps (int) : The length of the warm up phase. It can either be epochs or training step depending on when
+        you call the :meth:`step() <step>` method.
+
+    Example:
+        >>> optimizer = torch.optim.SGD(model.parameters())
+        >>> linear_warmup = LinearWarmupScheduler(optimizer, total_steps=500)
+        >>> scheduler_to_attached = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1000)
+        >>> linear_warmup.attach_scheduler(scheduler_to_attached)
+        >>> for data, labels in MyDataLoader:
+        >>>     ...
+        >>>     optimizer.step()
+        >>>     linear_warmup.step()
+    """
+
     def __init__(
         self, optimizer: torch.optim.Optimizer, total_steps: int = 500
     ) -> None:
@@ -19,6 +42,12 @@ class LinearWarmupScheduler(_LRScheduler):
     def attach_scheduler(
         self, scheduler: torch.optim.lr_scheduler._LRScheduler
     ) -> None:
+        """
+        This method attaches a PyTorch regular scheduler to the LinearWarmupScheduler.
+
+        Args:
+            scheduler (lr_scheduler) : The PyTorch scheduler that will be attached.
+        """
         if not isinstance(scheduler, _LRScheduler):
             raise TypeError("scheduler must inherit from _LRScheduler")
         self.attached_scheduler = scheduler

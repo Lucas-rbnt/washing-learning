@@ -1,12 +1,32 @@
+"""
+Every used image preprocessor will be found below.
+All theses classes are `washing_learning.vision.datasets.dataloaders compatible.
+They all implements a :meth:`preprocess(self, image) <preprocess>` method and can be used as follows:
+
+Example:
+    >>> sp = SimplePreprocessor(128, 128)
+    >>> ss = SimpleScaler()
+    >>> sdl = SimpleDataLoader(preprocessors=[ss, sp])
+"""
 # Third-party libraries
 import cv2
+import imutils
+import numpy as np
 from sklearn.feature_extraction.image import extract_patches_2d
 from tensorflow.keras.preprocessing.image import img_to_array
-import numpy as np
-import imutils
 
 
 class SimplePreprocessor:
+    """
+    A simple preprocessor used to resize a given set of images. This class is `washing_learning.vision.datasets.dataloaders
+    compatible.
+
+    Args:
+        width (float) : The image width after being processed
+        height (float) : The image height after being processed
+
+    """
+
     def __init__(self, width: float, height: float, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
@@ -18,6 +38,14 @@ class SimplePreprocessor:
 
 
 class SimpleScaler:
+    """
+    A simple preprocessors that scale every pixels in range [0, 1] (if `factor` = 255.)
+
+    Args:
+        factor (float) : The factor used to resize every pixel of the images.
+
+    """
+
     def __init__(self, factor: float = 255.0) -> None:
         self.factor = factor
 
@@ -26,6 +54,14 @@ class SimpleScaler:
 
 
 class PatchPreprocessor:
+    """
+    This class implements a Patch extractor preprocessor to augment your dataset.
+
+    Args:
+        width (float) : The width of the patches
+        height(float) : The height of the patches
+    """
+
     def __init__(self, width: float, height: float) -> None:
         self.width = width
         self.height = height
@@ -35,6 +71,15 @@ class PatchPreprocessor:
 
 
 class MeanPreprocessor:
+    """
+    This class implement a mean preprocessor to withdraw to each channel (RGB), its associated means across the dataset.
+
+    Args:
+        r_mean (float) : The mean value of each pixel of the red channel across the dataset.
+        g_mean (float) : The mean value of each pixel of the green channel across the dataset.
+        b_mean (float) : The mean value of each pixel of the blue channel across the dataset
+    """
+
     def __init__(self, r_mean: float, g_mean: float, b_mean: float) -> None:
         self.r_mean = r_mean
         self.g_mean = g_mean
@@ -51,6 +96,10 @@ class MeanPreprocessor:
 
 
 class ImageToArrayPreprocessor:
+    """
+    Based on the keras function...
+    """
+
     def __init__(self, data_format=None) -> None:
         self.data_format = data_format
 
@@ -59,6 +108,15 @@ class ImageToArrayPreprocessor:
 
 
 class CropPreprocessor:
+    """
+    This class implements a CropPreprocessor, useful to augment the dataset.
+
+    Args:
+        width (float) : The image width after being cropped
+        height(float) : The image height after being cropped
+        horiz (bool) : Whether or not to compute horizontal mirror flips (default set to `True`)
+    """
+
     def __init__(
         self, width: float, height: float, horiz: bool = True, inter=cv2.INTER_AREA
     ) -> None:
@@ -94,6 +152,14 @@ class CropPreprocessor:
 
 
 class AspectAwarePreprocessor:
+    """
+    This class implements an Aspect aware preprocessor, useful to keep the aspect ratio unchanged.
+
+    Args:
+        width (float) : The image width after being resized.
+        height(float) : The image height after being resized.
+    """
+
     def __init__(self, width: float, height: float, inter=cv2.INTER_AREA) -> None:
         self.width = width
         self.height = height
