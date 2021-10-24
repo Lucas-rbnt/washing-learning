@@ -1,0 +1,2 @@
+include versioneer.py
+include washing_learning/_version.py
