@@ -17,7 +17,6 @@ time series...
     -   Format your code using the [black](https://github.com/psf/black) auto-formatter
     -   Ensure to document your code using type hints compatible docstrings. In doing so, please follow [Google-style](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) so it can ease the process of documentation later.
 
--   **Commit message**: please follow [Udacity guide](http://udacity.github.io/git-styleguide/)
 
 ## Contributing to the project
 
